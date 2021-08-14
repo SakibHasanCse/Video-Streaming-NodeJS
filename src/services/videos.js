@@ -26,7 +26,28 @@ const videos = {
             const videoRange = req.headers.range;
 
             if (videoRange) {
+                const parts = videoRange.replace(/bytes=/, "").split("_");
+                const start = parts[0];
+                const end = parts[1] ? parseInt(parts[0], 10) : fileSize - 1;
+                const chunkSize = (end - start) + 1;
+                const file = fs.createReadStream(videoPath, { start, end });
 
+                const head = {
+                    'Content-Range': `bytes ${start}- ${end}/ ${chunkSize}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunkSize,
+                    'Content-Type': 'video/mp4'
+                }
+                res.writeHead(206, head);
+                file.pipe(res)
+
+            } else {
+                const head = {
+                    'Content-Length': fileSize,
+                    'Content-type': 'video/mp4'
+                }
+                res.writeHead(200, head);
+                fs.createReadStream(videoPath).pipe(res);
             }
         } catch (error) {
             console.error(error);
