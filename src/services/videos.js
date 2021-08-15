@@ -1,4 +1,4 @@
-const videoData = request('../mockData');
+const videoData = require('../mockData');
 const fs = require('fs');
 
 const videos = {
@@ -20,18 +20,17 @@ const videos = {
     },
     getVideoStrimingData: function (req, res, next) {
         try {
-            const videoPath = `../../assets/${req.params.id}/.mp4`;
+            const videoPath = `assets/${req.params.id}.mp4`;
             const videoStart = fs.statSync(videoPath);
             const fileSize = videoStart.size;
             const videoRange = req.headers.range;
-
             if (videoRange) {
-                const parts = videoRange.replace(/bytes=/, "").split("_");
-                const start = parts[0];
+                const parts = videoRange.replace(/bytes=/, "").split("-");
+                const start = parseInt(parts[0], 10);
                 const end = parts[1] ? parseInt(parts[0], 10) : fileSize - 1;
                 const chunkSize = (end - start) + 1;
                 const file = fs.createReadStream(videoPath, { start, end });
-
+                console.log({ videoRange, parts, start, end, chunkSize, file });
                 const head = {
                     'Content-Range': `bytes ${start}- ${end}/ ${chunkSize}`,
                     'Accept-Ranges': 'bytes',
@@ -56,4 +55,4 @@ const videos = {
 
 }
 
-export default videos;
+module.exports = videos;

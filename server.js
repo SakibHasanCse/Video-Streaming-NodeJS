@@ -5,12 +5,11 @@ var express = require('express'),
     fs = require('fs'),
     path = require('path');
 
-const VideoRouter = require('./src/router')
-
-
+const VideoRouter = require('./src/router/videos')
 app.use('/', VideoRouter);
 
 const port = process.env.PORT || 8000;
+
 app.listen(port, function () {
     console.log('server listing on port ' + port);
 });
