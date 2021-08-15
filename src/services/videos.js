@@ -51,6 +51,9 @@ const videos = {
         } catch (error) {
             console.error(error);
         }
+    },
+    getVideoCaptionData: function (req, res, next) {
+        res.sendFile(`assets/caption/${req.params.id}.vtt`, { root: __dirname });
     }
 
 }
