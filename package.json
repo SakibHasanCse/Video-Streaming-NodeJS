@@ -21,8 +21,11 @@
   },
   "homepage": "https://github.com/SakibHasanCse/Video-Streaming-NodeJS#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
+    "env": "0.0.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "mongodb": "^4.1.0",
     "nodemon": "^2.0.12",
     "socket.io": "^4.1.3"
   }
